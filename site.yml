@@ -1,0 +1,10 @@
+- hosts: all
+  become: yes
+  vars:
+    user_info:
+      fio: "Харитонов Арсений Николаевич"
+      group_number: "ИКБО-10-23"
+      variant_number: "29"
+  roles:
+    - nginx
+

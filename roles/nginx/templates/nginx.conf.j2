@@ -1,0 +1,17 @@
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    server {
+        listen 80;
+        location / {
+            return 200 "ФИО: {{ user_info.fio }} | Группа: {{ user_info.group_number }} | Вариант: {{ user_info.variant_number }}\n";
+        }
+    }
+}
