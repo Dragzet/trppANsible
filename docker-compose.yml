@@ -1,34 +1,908 @@
+version: '3'
 services:
-  ssh-server:
+  master:
     image: debian:latest
-    container_name: ssh_container
+    container_name: master
     restart: unless-stopped
     ports:
       - "2222:22"
     volumes:
-      - ssh_data:/root
+      - ssh_keys:/root/.ssh
+      - ./roles:/ansible/roles
+      - ./playbook:/ansible/playbook
+      - ./data:/ansible/data
+      - ./hosts:/ansible/hosts
+      - ./site.yml:/ansible/site.yml
     command: >
-      bash -c "apt update && apt install -y openssh-server && 
-               mkdir -p /run/sshd && 
-               echo 'root:root' | chpasswd && 
+      bash -c "apt update &&
+               apt install -y openssh-server openssh-client sshpass &&
+               mkdir -p /run/sshd &&
+               if [ ! -f /root/.ssh/id_rsa ]; then ssh-keygen -t rsa -N '' -f /root/.ssh/id_rsa; fi &&
+               echo 'root:root' | chpasswd &&
                /usr/sbin/sshd -D"
     tty: true
 
-  ssh-server2:
+  server-1:
     image: debian:latest
-    container_name: ssh_container2
+    container_name: server-1
     restart: unless-stopped
     ports:
       - "2223:22"
-      - "80:80"
     volumes:
-      - ssh_data:/root
+      - ssh_keys:/root/.ssh
     command: >
-      bash -c "apt update && apt install -y openssh-server && 
-               mkdir -p /run/sshd && 
-               echo 'root:root' | chpasswd && 
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-2:
+    image: debian:latest
+    container_name: server-2
+    restart: unless-stopped
+    ports:
+      - "2224:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-3:
+    image: debian:latest
+    container_name: server-3
+    restart: unless-stopped
+    ports:
+      - "2225:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-4:
+    image: debian:latest
+    container_name: server-4
+    restart: unless-stopped
+    ports:
+      - "2226:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-5:
+    image: debian:latest
+    container_name: server-5
+    restart: unless-stopped
+    ports:
+      - "2227:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-6:
+    image: debian:latest
+    container_name: server-6
+    restart: unless-stopped
+    ports:
+      - "2228:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-7:
+    image: debian:latest
+    container_name: server-7
+    restart: unless-stopped
+    ports:
+      - "2229:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-8:
+    image: debian:latest
+    container_name: server-8
+    restart: unless-stopped
+    ports:
+      - "2230:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-9:
+    image: debian:latest
+    container_name: server-9
+    restart: unless-stopped
+    ports:
+      - "2231:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-10:
+    image: debian:latest
+    container_name: server-10
+    restart: unless-stopped
+    ports:
+      - "2232:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-11:
+    image: debian:latest
+    container_name: server-11
+    restart: unless-stopped
+    ports:
+      - "2233:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-12:
+    image: debian:latest
+    container_name: server-12
+    restart: unless-stopped
+    ports:
+      - "2234:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-13:
+    image: debian:latest
+    container_name: server-13
+    restart: unless-stopped
+    ports:
+      - "2235:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-14:
+    image: debian:latest
+    container_name: server-14
+    restart: unless-stopped
+    ports:
+      - "2236:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-15:
+    image: debian:latest
+    container_name: server-15
+    restart: unless-stopped
+    ports:
+      - "2237:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-16:
+    image: debian:latest
+    container_name: server-16
+    restart: unless-stopped
+    ports:
+      - "2238:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-17:
+    image: debian:latest
+    container_name: server-17
+    restart: unless-stopped
+    ports:
+      - "2239:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-18:
+    image: debian:latest
+    container_name: server-18
+    restart: unless-stopped
+    ports:
+      - "2240:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-19:
+    image: debian:latest
+    container_name: server-19
+    restart: unless-stopped
+    ports:
+      - "2241:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-20:
+    image: debian:latest
+    container_name: server-20
+    restart: unless-stopped
+    ports:
+      - "2242:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-21:
+    image: debian:latest
+    container_name: server-21
+    restart: unless-stopped
+    ports:
+      - "2243:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-22:
+    image: debian:latest
+    container_name: server-22
+    restart: unless-stopped
+    ports:
+      - "2244:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-23:
+    image: debian:latest
+    container_name: server-23
+    restart: unless-stopped
+    ports:
+      - "2245:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-24:
+    image: debian:latest
+    container_name: server-24
+    restart: unless-stopped
+    ports:
+      - "2246:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-25:
+    image: debian:latest
+    container_name: server-25
+    restart: unless-stopped
+    ports:
+      - "2247:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-26:
+    image: debian:latest
+    container_name: server-26
+    restart: unless-stopped
+    ports:
+      - "2248:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-27:
+    image: debian:latest
+    container_name: server-27
+    restart: unless-stopped
+    ports:
+      - "2249:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-28:
+    image: debian:latest
+    container_name: server-28
+    restart: unless-stopped
+    ports:
+      - "2250:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-29:
+    image: debian:latest
+    container_name: server-29
+    restart: unless-stopped
+    ports:
+      - "2251:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-30:
+    image: debian:latest
+    container_name: server-30
+    restart: unless-stopped
+    ports:
+      - "2252:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-31:
+    image: debian:latest
+    container_name: server-31
+    restart: unless-stopped
+    ports:
+      - "2253:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-32:
+    image: debian:latest
+    container_name: server-32
+    restart: unless-stopped
+    ports:
+      - "2254:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-33:
+    image: debian:latest
+    container_name: server-33
+    restart: unless-stopped
+    ports:
+      - "2255:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-34:
+    image: debian:latest
+    container_name: server-34
+    restart: unless-stopped
+    ports:
+      - "2256:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-35:
+    image: debian:latest
+    container_name: server-35
+    restart: unless-stopped
+    ports:
+      - "2257:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-36:
+    image: debian:latest
+    container_name: server-36
+    restart: unless-stopped
+    ports:
+      - "2258:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-37:
+    image: debian:latest
+    container_name: server-37
+    restart: unless-stopped
+    ports:
+      - "2259:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-38:
+    image: debian:latest
+    container_name: server-38
+    restart: unless-stopped
+    ports:
+      - "2260:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-39:
+    image: debian:latest
+    container_name: server-39
+    restart: unless-stopped
+    ports:
+      - "2261:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-40:
+    image: debian:latest
+    container_name: server-40
+    restart: unless-stopped
+    ports:
+      - "2262:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-41:
+    image: debian:latest
+    container_name: server-41
+    restart: unless-stopped
+    ports:
+      - "2263:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-42:
+    image: debian:latest
+    container_name: server-42
+    restart: unless-stopped
+    ports:
+      - "2264:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-43:
+    image: debian:latest
+    container_name: server-43
+    restart: unless-stopped
+    ports:
+      - "2265:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-44:
+    image: debian:latest
+    container_name: server-44
+    restart: unless-stopped
+    ports:
+      - "2266:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-45:
+    image: debian:latest
+    container_name: server-45
+    restart: unless-stopped
+    ports:
+      - "2267:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-46:
+    image: debian:latest
+    container_name: server-46
+    restart: unless-stopped
+    ports:
+      - "2268:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-47:
+    image: debian:latest
+    container_name: server-47
+    restart: unless-stopped
+    ports:
+      - "2269:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-48:
+    image: debian:latest
+    container_name: server-48
+    restart: unless-stopped
+    ports:
+      - "2270:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
+               /usr/sbin/sshd -D"
+    tty: true
+
+  server-49:
+    image: debian:latest
+    container_name: server-49
+    restart: unless-stopped
+    ports:
+      - "2271:22"
+    volumes:
+      - ssh_keys:/root/.ssh
+    command: >
+      bash -c "apt update &&
+               apt install -y openssh-server python3 &&
+               mkdir -p /run/sshd &&
+               echo 'root:root' | chpasswd &&
+               mkdir -p /root/.ssh &&
+               cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys 2>/dev/null || true &&
                /usr/sbin/sshd -D"
     tty: true
 
 volumes:
-  ssh_data:
+  ssh_keys:
